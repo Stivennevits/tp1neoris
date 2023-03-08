@@ -11,7 +11,11 @@ public class testTienda extends Tiendas {
 		Envasados as = new Envasados();
 		Bebidas b = new Bebidas();
 		Bebidas c = new Bebidas();
+		Liempieza l = new Liempieza();
+		Bebidas john = new Bebidas();
 		
+		john.setIdentificador("AC666");
+		l.setIdentificador("AZ723");
 		as.setIdentificador("AB123");
 		b.setIdentificador("AC489");
 		b.setIdentificador("AC089");
@@ -19,12 +23,15 @@ public class testTienda extends Tiendas {
 		as.setTipoEnvase(TipoEnvase.plastico);
 		
 		//String ident = b.getIdentificador();
+	    //System.out.println(justo.calcularValorStock());	
 		justo.setNombre("justso");
 		
+		System.out.println(john.getIdentificador());
 		//justo.agregarProducto1(b);
 		
-		justo.agregarProducto("envasados", as);
-		justo.agregarProducto("bebidas", b);
+		justo.agregarProducto("Envasados",as);
+		justo.agregarProducto("Bebidas" ,b);
+		justo.agregarProducto("Limpieza" ,l);
 		
 		
 		/*
@@ -38,6 +45,7 @@ public class testTienda extends Tiendas {
 		justo.agregarProducto2(as);
 		justo.agregarProducto2(b);
 		justo.agregarProducto2(c);*/
+		/*
 		System.out.println(justo.toString());
 		//
 		/*

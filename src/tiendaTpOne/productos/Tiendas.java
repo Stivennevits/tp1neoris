@@ -70,13 +70,35 @@ public class Tiendas extends Productos {
 		this.stock = stock;
 	}
 	
-	
-	public void agregarProducto(String tipo, Productos producto) {
+	/*
+	public void agregarProducto2(String tipo, Productos producto) {
 		if (this.stock.get(tipo).size() < this.maxProductos) {
 			this.stock.get(tipo).add(producto);
 		} else {
 			System.out.println("No se puede agregar el producto. Stock lleno.");
 		}
+	}*/
+	
+	public int calcularCantidadProductos() {
+	    int total = 0;
+	    for (String tipo : this.stock.keySet()) {
+	        total += this.stock.get(tipo).size();
+	    }
+	    return total;
+	}
+	
+	public void agregarProducto(String tipo, Productos producto) {
+		tipo = tipo.toLowerCase();
+	    List<Productos> listaProductos = this.stock.get(tipo);
+	    if (listaProductos.size() < this.maxProductos) {
+	        listaProductos.add(producto);
+	        if (this.calcularCantidadProductos() > this.maxProductos) {
+	            listaProductos.remove(producto);
+	            System.out.println("No se puede agregar el producto. Stock lleno.");
+	        }
+	    } else {
+	        System.out.println("No se puede agregar el producto. Stock lleno.");
+	    }
 	}
 	
 
