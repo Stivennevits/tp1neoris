@@ -8,3 +8,4 @@ public interface Comestibles {
     void setCalorias(int calorias);
     double getCalorias();
 }
+	

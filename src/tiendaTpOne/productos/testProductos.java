@@ -45,7 +45,8 @@ public class testProductos extends Envasados {
 		lim.setPrecioUnidad(6800);
 		lim.setDescuento(62.88);
 		
-		
+		System.out.println(malta.getIdentificador());
+		System.out.println(b1.getIdentificador());
 		System.out.println(malta.getPrecioUnidad());
 		System.out.println(malta.getDescuento());
 		System.out.println(malta.getPrecioConDescuento());

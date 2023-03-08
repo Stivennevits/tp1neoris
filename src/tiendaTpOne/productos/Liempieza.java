@@ -11,6 +11,18 @@ public class Liempieza extends Productos{
 		
 	};
 	
+	public String toString() {
+		String resultado = "[Identificador: " + identificador + "\n";
+	    resultado += "Descripción: " + descripcion + "\n";
+	    resultado += "Tipo de Uso: " + getTipoDeUso() + "\n";
+	    resultado += "Cantidad en stock: " + cantidadEnStock + "\n";
+	    resultado += "Precio por unidad: " + precioUnidad + "\n";
+	    resultado += "Porcentaje de ganancia: " + porcentajeGanancia + "\n";
+	    resultado += "Disponible para venta: " + disponibleParaVenta + "\n";
+	    resultado += "Descuento: " + descuento + "]" + "\n" ;
+	    return resultado;
+	}
+	
 	public TipoDeUso tipoDeUso;
 	
 	public String getIdentificador() {
