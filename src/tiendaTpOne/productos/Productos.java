@@ -2,16 +2,20 @@ package tiendaTpOne.productos;
 
 public class Productos implements Descuentos{
 	protected String identificador = new String(new char[5]);
+	protected String nombreProducto;
 	protected String descripcion;
 	protected int cantidadEnStock;
 	protected double precioUnidad;
 	protected double porcentajeGanancia;
 	protected boolean disponibleParaVenta;
 	protected double descuento;
+	
+
 
 	
 	public String toString() {
 	    return "Identificador: " + identificador
+	    		+ ", Nombre: " + nombreProducto
 	            + ", Descripción: " + descripcion
 	            + ", Cantidad en stock: " + cantidadEnStock
 	            + ", Precio unidad: " + precioUnidad
@@ -20,6 +24,20 @@ public class Productos implements Descuentos{
 	            + ", Descuento: " + descuento;
 	}
 	
+
+
+	public  String getNombreProducto() {
+		return nombreProducto;
+	}
+
+
+
+	public  void setNombreProducto(String nombreProducto) {
+		this.nombreProducto = nombreProducto;
+	}
+
+
+
 	public String getDescripcion() {
 		return descripcion;
 	}
@@ -35,6 +53,9 @@ public class Productos implements Descuentos{
 	public void setCantidadEnStock(int cantidadEnStock) {
 		this.cantidadEnStock = cantidadEnStock;
 	}
+	public void disminuirCantidadEnStock(int cantidadEnStock) {
+        this.cantidadEnStock -= cantidadEnStock;
+    }
 
 	public double getPrecioUnidad() {
 		return precioUnidad;
