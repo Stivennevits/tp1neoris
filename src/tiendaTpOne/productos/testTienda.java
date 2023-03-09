@@ -31,17 +31,16 @@ public class testTienda extends Tiendas {
 		justo.comprarProducto("Envasados", cafe, 12);
 		justo.comprarProducto("Bebidas", jugo, 8);
 		
-		
-		
-		
-		
-		
-		
+		justo.venderProductos("Bebidas", jugo, 2);
+		justo.venderProductos("Envasados", cafe, 4);
+		justo.venderProductos("LIMPIEZA", fab, 3);
+
 		//System.out.println(cafe.toString());
 		
 		
-		
+		//System.out.println(justo.imprimirCostoTotalVentas());
 		System.out.println(justo.calcularCantidadProductos()); 
+		
 		//System.out.println(justo.toString()); 
 		
 		
