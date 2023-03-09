@@ -10,6 +10,7 @@ public class Tiendas extends Productos {
 	private int maxProductos;
 	private double saldoCaja;
 	private Map<String, List<Productos>> stock;
+	private int cantidadTotalProductos;
 
 	public Tiendas(String nombre, int maxProductos, double saldoCaja) {
 		this.nombre = nombre;
@@ -19,6 +20,7 @@ public class Tiendas extends Productos {
 		this.stock.put("envasados", new ArrayList<>());
 		this.stock.put("bebidas", new ArrayList<>());
 		this.stock.put("limpieza", new ArrayList<>());
+		this.cantidadTotalProductos = 0;
 	}
 
 	public Tiendas() {
@@ -43,7 +45,13 @@ public class Tiendas extends Productos {
 		return resultado;
 	}
 
-	
+	private int getCantidadTotalProductos() {
+	    int cantidad = 0;
+	    for (List<Productos> listaProductos : this.stock.values()) {
+	        cantidad += listaProductos.size();
+	    }
+	    return cantidad;
+	}
 
 	public String getNombre() {
 		return nombre;
@@ -85,48 +93,90 @@ public class Tiendas extends Productos {
 		return total;
 	}
 	
-	public void agregarProducto(String tipo, Productos producto, int cantidad) {
+	public void comprarProducto(String tipo, Productos producto, int cantidad) {
 	    tipo = tipo.toLowerCase();
 	    boolean tipoReconocido = false;
-	    for (String tipoProducto : this.stock.keySet()) {
-	        if (tipoProducto.toLowerCase().equals(tipo)) {
+	    for (Map.Entry<String, List<Productos>> entry : this.stock.entrySet()) {
+	        String tipoProducto = entry.getKey().toLowerCase();
+	        List<Productos> listaProductos = entry.getValue();
+
+	        if (tipoProducto.equals(tipo)) {
 	            tipoReconocido = true;
-	            List<Productos> listaProductos = this.stock.get(tipoProducto);
+
 	            int cantidadActual = listaProductos.size();
-	            int espacioDisponible = this.maxProductos - cantidadActual;
-	            if (cantidad <= espacioDisponible) {
-	                double costoTotal = producto.getPrecioUnidad() * cantidad;
-	                int cantidadMaxima = (int) (this.saldoCaja / producto.getPrecioUnidad());
-	                if (cantidadMaxima < cantidad) {
-	                    cantidad = cantidadMaxima;
-	                    costoTotal = producto.getPrecioUnidad() * cantidad;
-	                    System.out.println("Solo se pueden agregar " + cantidad + " productos a la tienda por saldo insuficiente en la caja");
-	                }
-	                if (this.saldoCaja >= costoTotal) {
-	                    for (int i = 0; i < cantidad; i++) {
-	                        producto.setDisponibleParaVenta(true);
-	                        listaProductos.add(producto);
-	                    }
-	                    this.saldoCaja -= costoTotal;
-	                } else {
-	                    System.out.println("Saldo insuficiente para comprar más productos");
-	                }
-	            } else {
-	                System.out.println("No se pueden agregar más productos. Espacio lleno.");
+	            if (this.cantidadTotalProductos + cantidad > this.maxProductos) {
+	                System.out.println("No se pueden agregar más de " + this.maxProductos + " productos.");
+	                return;
 	            }
+
+	            double costoTotal = producto.getPrecioUnidad() * cantidad;
+	            int cantidadMaxima = (int) (this.saldoCaja / producto.getPrecioUnidad());
+	            if (cantidadMaxima < cantidad) {
+	                cantidad = cantidadMaxima;
+	                costoTotal = producto.getPrecioUnidad() * cantidad;
+	                System.out.println("Solo se pueden agregar " + cantidad + " productos a la tienda por saldo insuficiente en la caja");
+	            }
+	            if (this.saldoCaja >= costoTotal) {
+	                for (int i = 0; i < cantidad; i++) {
+	                    producto.setDisponibleParaVenta(true);
+	                    listaProductos.add(producto);
+	                    this.cantidadTotalProductos++;
+	                }
+	                this.saldoCaja -= costoTotal;
+	            } else {
+	                System.out.println("Saldo insuficiente para comprar más productos.");
+	            }
+	            break;
 	        }
 	    }
+
 	    if (!tipoReconocido) { 
 	        System.out.println("No se reconoce el tipo ingresado. " + "\n" 
-	            + "Los Tipos de productos validos son: " + "\n" +
-	            "*Limpieza *Bebidas *envasados" + "\n" 
-	            + "----------------------------------------------");
+	                + "Los Tipos de productos validos son: " + "\n" +
+	                "*Limpieza *Bebidas *envasados" + "\n" 
+	                + "----------------------------------------------");
 	    }
 	}
 
+	/*
+	public void agregarProducto22(String tipo, Productos producto, int cantidad) {
+	    tipo = tipo.toLowerCase();
+	    boolean tipoReconocido = false;
+	    for (Map.Entry<String, List<Productos>> entry : this.stock.entrySet()) {
+	        String tipoProducto = entry.getKey().toLowerCase();
+	        if (tipoProducto.equals(tipo)) {
+	            tipoReconocido = true;
+	            List<Productos> listaProductos = entry.getValue();
+	            int cantidadActual = listaProductos.size();
+	            int cantidadMaximaAgregar = this.maxProductos - cantidadActual;
+	            if (cantidadMaximaAgregar <= 0) {
+	                System.out.println("No se pueden agregar más productos. Stock lleno.");
+	                return;
+	            }
+	            if (cantidadMaximaAgregar < cantidad) {
+	                cantidad = cantidadMaximaAgregar;
+	                System.out.println("Solo se pueden agregar " + cantidad + "  a la tienda por límite de stock");
+	            }
+	            double costoTotal = producto.getPrecioUnidad() * cantidad;
+	            if (this.saldoCaja < costoTotal) {
+	                System.out.println("Saldo insuficiente para comprar más productos.");
+	                return;
+	            }
+	            for (int i = 0; i < cantidad; i++) {
+	                listaProductos.add(producto);
+	            }
+	            this.saldoCaja -= costoTotal;
+	            System.out.println("*** " + cantidad + " productos de " + tipoProducto + " agregados a la tienda." + " ***");
+	            return;
+	        }
+	    }
+	    if (!tipoReconocido) {
+	        System.out.println("No se reconoce el tipo ingresado. Los tipos de productos válidos son: limpieza, bebidas, envasados.");
+	    }
+	}
 	
 	/*
-	public void agregarProducto2(String tipo, Productos producto, int cantidad) {
+	public void agregarProducto8(String tipo, Productos producto, int cantidad) {
 		 
 	    tipo = tipo.toLowerCase();
 	    boolean tipoReconocido = false;
@@ -135,6 +185,7 @@ public class Tiendas extends Productos {
 	            tipoReconocido = true;
 	            List<Productos> listaProductos = this.stock.get(tipoProducto);
 	            int cantidadActual = listaProductos.size();
+	            
 	            if (cantidadActual + cantidad > this.maxProductos ) {
 	            	System.out.println("No se pueden agregar más de " + this.maxProductos + " productos.");
 			        return;
@@ -168,7 +219,8 @@ public class Tiendas extends Productos {
 	        		"*Limpieza *Bebidas *envasados" + "\n" 
 	        		+ "----------------------------------------------");
 	    }
-	}*/
+	}
+	*/
 	/*
 	public void agregarProducto1(String tipo, Productos producto) {
 		tipo = tipo.toLowerCase();

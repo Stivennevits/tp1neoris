@@ -5,7 +5,7 @@ import tiendaTpOne.productos.Envasados.TipoEnvase;
 public class testTienda extends Tiendas {
 	
 	public static void main(String[] args) {
-		Tiendas justo = new Tiendas("justo", 7, 200000);
+		Tiendas justo = new Tiendas("justo", 7, 90000);
 		
 		Envasados cafe = new Envasados();
 		Bebidas jugo = new Bebidas();
@@ -21,9 +21,14 @@ public class testTienda extends Tiendas {
 		fab.setIdentificador("AZ823");
 		fab.setPrecioUnidad(20000);
 		
-		justo.agregarProducto("LIMPIEZA", fab, 3);
-		justo.agregarProducto("Bebidas", jugo, 3);
-		justo.agregarProducto("Envasados", cafe, 2);
+		justo.comprarProducto("LIMPIEZA", fab, 6);
+		justo.comprarProducto("Envasados", cafe, 2);
+		justo.comprarProducto("Bebidas", jugo, 8);
+		
+		
+		
+		
+		
 		
 		
 		
