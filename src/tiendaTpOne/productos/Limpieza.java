@@ -1,6 +1,6 @@
 package tiendaTpOne.productos;
 
-public class Liempieza extends Productos{
+public class Limpieza extends Productos{
 	private String identificador;
 	
 	protected enum TipoDeUso{

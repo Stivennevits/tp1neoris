@@ -2,7 +2,7 @@ package tiendaTpOne.productos;
 
 import java.util.Date;
 
-import tiendaTpOne.productos.Liempieza.TipoDeUso;
+import tiendaTpOne.productos.Limpieza.TipoDeUso;
 
 public class testProductos extends Envasados {
 	public static void main(String[] args) {
@@ -39,7 +39,7 @@ public class testProductos extends Envasados {
 		liqui.setPorcentajeAlcohol(20.2f);
 		
 		
-		Liempieza lim = new Liempieza();
+		Limpieza lim = new Limpieza();
 		
 		lim.setTipoDeUso(TipoDeUso.cocina);
 		lim.setPrecioUnidad(6800);
