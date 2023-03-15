@@ -58,6 +58,7 @@ public class Productos implements Descuentos{
     }
 
 	public double getPrecioUnidad() {
+		
 		return precioUnidad;
 	}
 

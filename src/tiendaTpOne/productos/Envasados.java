@@ -62,6 +62,30 @@ public class Envasados extends Productos implements Comestibles{
 		this.esImportado = esImportado;
 	}
 	
+	public void setPorcentajeGanancia(double porcentajeGanancia) {
+		if (porcentajeGanancia <= 20 ) {
+			this.porcentajeGanancia = porcentajeGanancia;
+	    } else {
+	        System.out.println("El porcentaje de ganancia no puede ser mayor al 20%");
+	    }
+		
+	}
+	
+	@Override
+	public void setDescuento(double descuento) {
+		if(descuento <= 20) {
+			this.descuento = descuento;
+		}else {
+			System.out.println("El porcentaje de descuento de los envasados no podrá superar el 20%");
+		}
+	}
+
+	@Override
+	public double getDescuento() {
+		
+		return descuento;
+	}
+	
 	@Override
 	public void setFechaVencimiento(Date fechaVencimiento) {
 		this.fechaVencimiento = fechaVencimiento;
@@ -74,15 +98,16 @@ public class Envasados extends Productos implements Comestibles{
 		return fechaVencimiento;
 	}
 
-	@Override
-	public void setCalorias(int calorias) {
-		this.calorias = calorias;
-		
-	}
-
+	
 	@Override
 	public double getCalorias() {
 		return calorias;
+	}
+
+	@Override
+	public void setCalorias(double calorias) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	

@@ -28,7 +28,14 @@ public class Limpieza extends Productos{
 	public String getIdentificador() {
         return identificador;
     }
-	
+	public void setPorcentajeGanancia(double porcentajeGanancia, TipoDeUso tipoDeUso) {
+		if((tipoDeUso == TipoDeUso.baño || tipoDeUso == TipoDeUso.cocina)&& (porcentajeGanancia >= 10 && porcentajeGanancia <= 20)) {
+			this.porcentajeGanancia = porcentajeGanancia;
+		} else if((tipoDeUso == TipoDeUso.multiusos || tipoDeUso == TipoDeUso.ropa)&& ( porcentajeGanancia <= 20)) {
+			this.porcentajeGanancia = porcentajeGanancia;
+		}
+		
+	}
 	public void setIdentificador(String identificador) {
 		   
 		 if (identificador.matches("AZ\\d{3}")) {
@@ -44,6 +51,21 @@ public class Limpieza extends Productos{
 
 	public void setTipoDeUso(TipoDeUso tipoDeUso) {
 		this.tipoDeUso = tipoDeUso;
+	}
+	
+	@Override
+	public void setDescuento(double descuento) {
+		if(descuento <= 25) {
+			this.descuento = descuento;
+		}else {
+			System.out.println("El porcentaje de descuento de los productos de 'limpieza' no podrá superar el 25%");
+		}
+	}
+
+	@Override
+	public double getDescuento() {
+		
+		return descuento;
 	}
 		
 }

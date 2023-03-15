@@ -1,9 +1,15 @@
 package tiendaTpOne.productos;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Tiendas extends Productos {
 	private String nombre;
@@ -23,6 +29,7 @@ public class Tiendas extends Productos {
 		this.stock.put("limpieza", new ArrayList<>());
 		this.cantidadTotalProductos = 0;
 		this.costoTotalAcumulado = 0;
+
 	}
 
 	public Tiendas() {
@@ -145,31 +152,74 @@ public class Tiendas extends Productos {
 					+ "\n" + "*Limpieza *Bebidas *envasados" + "\n" + "----------------------------------------------");
 		}
 	}
-
+	
+	int contadorEnvasados =0;
+	int contadorBebidas =0;
+	int contadorLimpieza =0;
+	
+	//int contador = 0; 
 	public void venderProductos(String tipo, Productos producto, int cantidad) {
 		tipo = tipo.toLowerCase();
 		boolean tipoReconocido = false;
 
 		for (Map.Entry<String, List<Productos>> entry : this.stock.entrySet()) {
+
 			String tipoProducto = entry.getKey().toLowerCase();
 			List<Productos> listaProductos = entry.getValue();
 
 			if (tipoProducto.equals(tipo)) {
 				tipoReconocido = true;
+				//String t = entry.getKey();
+				switch (tipoProducto) {
+			    case "envasados":
+			    	if (contadorEnvasados < 3) {
+			    		contadorEnvasados++;
+			        } else {
+			            System.out.println("No se pueden agregar más productos envasados");
+			        	//tipoReconocido = false;
+			        	tipoProducto = "fl";
+			        }
+			        break;
+			    case "bebidas":
+			        if (contadorBebidas < 3) {
+			        	contadorBebidas++;
+			        } else {
+			            System.out.println("No se pueden agregar más bebidas");
+			        	//tipoReconocido = false;
+			        	tipoProducto = "fl";
+			        }
+			        break;
+			    case "limpieza":
+			    	if (contadorLimpieza < 3) {
+			        	contadorLimpieza++;
+			        } else {
+			            System.out.println("No se pueden vender más productos de limpieza");
+			            //tipoReconocido = false;
+			            tipoProducto = "fl";
+			            
+			        }
+			        break;
+			}
 
 				int cantidadActual = listaProductos.size();
+
 				if (cantidadActual == 0) {
 					System.out.println("No hay productos disponibles para comprar en el tipo " + tipoProducto);
 					return;
 				}
-				if (cantidadActual < cantidad) {
-					System.out.println(
-							"No hay suficientes productos disponibles en stock para vender, solo te podemos vender "
-									+ cantidadActual + " productos");
+				else if(tipoProducto == "fl"){
+					
+					System.out.println("No es posible vender otro producto del mismo tipo, solo se pueden vender máximo 3 tipos");
+					return;
+				}
+				if (cantidadActual < cantidad  && (contadorEnvasados <= 3 && contadorBebidas <= 3 && contadorLimpieza <= 3 )) {
+					System.out.println("No hay suficientes productos disponibles de '" + producto.getNombreProducto()
+							+ "' en stock para vender, solo te podemos vender " + cantidadActual + " productos");
 
-					double costoTotal = listaProductos.get(0).getPrecioUnidad() * cantidad;
+					double costoTotal = listaProductos.get(0).getPrecioUnidad() * cantidadActual;
 
-					for (int i = 0; i < cantidadActual; i++) {
+					for (int i = 0;  i < cantidadActual; i++) {
+						 
 						listaProductos.remove(0);
 					}
 
@@ -178,8 +228,11 @@ public class Tiendas extends Productos {
 									+ cantidadActual + " del tipo " + tipoProducto + " por un total de " + costoTotal);
 					costoTotalAcumulado += costoTotal;
 
-				} else {
+				} else if (cantidad > 10 && contadorEnvasados <= 3 && contadorBebidas <= 3 && contadorLimpieza <= 3 ) {
 
+					System.out.println("Solo está permitido comprar hasta 10 " + producto.getNombreProducto());
+					
+					cantidad = 10;
 					double costoTotal = listaProductos.get(0).getPrecioUnidad() * cantidad;
 
 					for (int i = 0; i < cantidad; i++) {
@@ -190,19 +243,34 @@ public class Tiendas extends Productos {
 							"Se han vendido " + producto.getIdentificador() + " " + producto.getNombreProducto() + " x "
 									+ cantidad + " del tipo " + tipoProducto + " por un total de " + costoTotal);
 					costoTotalAcumulado += costoTotal;
+				} else if ( contadorEnvasados <= 3 && contadorBebidas <= 3 && contadorLimpieza <= 3 ) {
+						double costoTotal = listaProductos.get(0).getPrecioUnidad() * cantidad;
 
-				}
+						for (int i = 0; i < 10 && i < cantidad; i++) {
+							listaProductos.remove(0);
+						}
 
+						System.out.println("Se han vendido " + producto.getIdentificador() + " "
+								+ producto.getNombreProducto() + " x " + cantidad + " del tipo " + tipoProducto
+								+ " por un total de " + costoTotal);
+						costoTotalAcumulado += costoTotal;
+
+					}
+				
 			}
+
 		}
 
 		if (!tipoReconocido) {
-			System.out.println("No se reconoce el tipo ingresado. " + "\n" + "Los Tipos de productos validos son: "
-					+ "\n" + "*Limpieza *Bebidas *envasados" + "\n" + "----------------------------------------------");
+			System.out.println("No se reconoce el tipo ingresado: " + tipo + "\n"
+					+ "Los Tipos de productos validos son: " + "\n" + "*Limpieza *Bebidas *Envasados" + "\n"
+					+ "----------------------------------------------");
 		}
 
 	}
+	
 
+	
 	public void imprimirCostoTotalVentas() {
 
 		System.out.println("El costo total de todas las ventas realizadas es: " + this.costoTotalAcumulado);
